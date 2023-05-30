@@ -6,28 +6,22 @@ import axios from "axios";
         
 
 const Register = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
-    const user = {
-      firstName,
-      lastName,
-      email,
-      password
-    };
-    
-    axios.post('/auth/register', user)
-      .then(response => {
-        // Handle successful registration
-      })
-      .catch(error => {
-        // Handle registration error
+    try {
+      await axios.post("http://localhost:8085/api/v1/employee/save", {
+        fullName: fullName,
+        email: email,
+        password: password,
       });
+      alert("User added successfully !!")
+    } catch (err) {
+      alert(err);
+    }
     };
  
 
@@ -48,17 +42,12 @@ const Register = () => {
         <div className="inputs">
           <input
             type="text"
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="Full Name"
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
           />
           <br />
-          <input
-            type="text"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
+          
           <br />
           <input
             type="text"

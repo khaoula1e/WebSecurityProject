@@ -10,26 +10,29 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Handle form submission
-        const credentials = {
-            email,
-            password
-        };
-    
-        axios.post('/auth/login', credentials)
-        .then(response => {
-            // Handle successful login
-            console.log('Login successful!');
-            console.log('Response:', response);
-            navigate('/'); // Redirect to dashboard on successful login
-        })
-        .catch(error => {
-            // Handle login error
-            console.error('Login error:', error);
-        });
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        const response = await axios.post(
+        "http://localhost:8085/api/v1/employee/login",
+        {
+            email: email,
+            password: password,
+        }
+        );
+        console.log(response.data);
+        if (response.data.message === "Email not exists") {
+        alert("email doesn't exist");
+        } else if (response.data.message === "Login Success") {
+        navigate('/home');
+        } else {
+        alert("Incorrect Email and password doesn't match!!");
+        }
+    } catch (error) {
+        alert(error.message);
     }
+    };
+
 
     return (
         <div className="box-form">
