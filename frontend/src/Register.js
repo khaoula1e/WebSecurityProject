@@ -3,27 +3,30 @@ import styled from "styled-components";
 import "./style.css";
 import { Link, useNavigate } from 'react-router-dom'
 import axios from "axios";
-        
 
 const Register = () => {
-  const [fullName, setFullName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8085/api/v1/employee/save", {
-        fullName: fullName,
-        email: email,
-        password: password,
-      });
-      alert("User added successfully !!")
-    } catch (err) {
-      alert(err);
+      await axios.post(
+        "http://localhost:8080/api/auth/signup",
+        {
+          username: username,
+          email: email,
+          password: password,
+        }
+      );
+      alert("User added successfully !!");
+      navigate('/login');
+    } catch (error) {
+      alert(error.message);
     }
-    };
- 
+  };
 
   return (
     <div className="box-form">
@@ -42,12 +45,10 @@ const Register = () => {
         <div className="inputs">
           <input
             type="text"
-            placeholder="Full Name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
-          <br />
-          
           <br />
           <input
             type="text"
